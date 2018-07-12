@@ -9,6 +9,7 @@ const {ObjectID} = require('mongodb');
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
+var {authenticate} =  require('./middleware/authenticate');
 
 
 
@@ -126,5 +127,16 @@ app.post('/users', (req, res) => {
       res.status(400).send(e);
     });   
 });
+
+//this route is going to receive a token, find the valid user, then send that user back
+
+//we want to break out this route into some middleware
+
+
+
+
+app.get('/users/me', authenticate, (req,res) => {
+  res.send(req.user);
+})
 
 module.exports = {app};

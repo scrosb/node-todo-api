@@ -41,7 +41,7 @@ UserSchema.methods.toJSON = function() {
   return _.pick(userObject, ['_id', 'email']);
 
 }
-
+//instance methods get called with th eindividual document
 UserSchema.methods.generateAuthToken = function() {
   //we need a this keyword for our methods
   var user = this; //we're identifying this specifi user
@@ -56,6 +56,27 @@ UserSchema.methods.generateAuthToken = function() {
   });
 }
 
+//statics is kind of like methods
+//model methods get called with the model as the this binding
+UserSchema.statics.findByToken = function(token) {
+  var User = this;
+  var decoded;
+  //jwt will throw an error if something does not exist
+  try {
+    decoded = jwt.verify(token, 'jarjarbinks');
+  } catch(e) {
+    //always want to reject
+    return Promise.reject();
+  }
+  //add some chaining by returning
+  //find the user 
+  return User.findOne({
+    '_id':decoded._id,
+    'tokens.token': token,
+    'tokens.access':'auth'
+  });
+
+};
 var User = mongoose.model('User', UserSchema);
 
 module.exports = {User}
