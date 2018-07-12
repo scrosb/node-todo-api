@@ -1,4 +1,4 @@
-// require('./config/config.js');
+require('../config/config.js');
 //adding if else statements to configure our environment
 
 const _ = require('lodash');
@@ -106,6 +106,25 @@ app.listen(port, () => {
   console.log(`Started up at port ${port}`);
 });
 
+// POST /users
 
+app.post('/users', (req, res) => {
+  var body = _.pick(req.body, ['email', 'password']);
+    //make sure database is dropped so validator works
+    var user = new User(body);
+
+    //model methods and instance methods
+    user.save().then(() => {
+      return user.generateAuthToken();
+      //res.send(user)
+    }).then((token) => {
+      //user variable above is not the same as the user variable defined here
+      //when you prefix a header with x-auth you're creating a custom header
+      console.log(token);
+      res.header('x-auth', token).send(user);
+    }).catch((e) =>{
+      res.status(400).send(e);
+    });   
+});
 
 module.exports = {app};
