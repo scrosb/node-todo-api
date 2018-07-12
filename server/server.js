@@ -1,4 +1,4 @@
-require('./config/config.js');
+// require('./config/config.js');
 //adding if else statements to configure our environment
 
 const _ = require('lodash');
