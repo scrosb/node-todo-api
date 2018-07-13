@@ -121,7 +121,6 @@ app.post('/users', (req, res) => {
     }).then((token) => {
       //user variable above is not the same as the user variable defined here
       //when you prefix a header with x-auth you're creating a custom header
-      console.log(token);
       res.header('x-auth', token).send(user);
     }).catch((e) =>{
       res.status(400).send(e);
