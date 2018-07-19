@@ -103,9 +103,7 @@ app.patch('/todos/:id', (req, res) => {
   })
 });
 
-app.listen(port, () => {
-  console.log(`Started up at port ${port}`);
-});
+
 
 // POST /users
 
@@ -154,6 +152,22 @@ app.post('/users/login', (req, res) => {
     res.status(400).send();
   });
 
+});
+
+
+//make the route private, we store the token inside authenticate
+app.delete('/users/me/token', authenticate, (req, res) => {
+  //instance method
+
+  req.user.removeToken(req.token).then(() => {
+    res.status(200).send();
+  }, () => {
+    res.status(400).send();
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Started up at port ${port}`);
 });
 
 module.exports = {app};

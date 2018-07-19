@@ -57,6 +57,17 @@ UserSchema.methods.generateAuthToken = function() {
   });
 }
 
+UserSchema.methods.removeToken = function(token) {
+  var user = this;
+  //pull is a mongodb operator that allows you to remove properties from an object
+  //if the user object has the same token as the one passed in it will be removed.
+  return user.update({
+    $pull: {
+      tokens:{token}
+    }
+  })
+}
+
 //statics is kind of like methods
 //model methods get called with the model as the this binding
 UserSchema.statics.findByToken = function(token) {
