@@ -79,6 +79,33 @@ UserSchema.statics.findByToken = function(token) {
 
 };
 
+//use .statics for a model method
+
+UserSchema.statics.findByCredentials = function(email, password) {
+  //find a user where the email and password match the users
+  var User = this;
+  console.log('hello');
+    return User.findOne({email}).then((user) => {
+    // console.log(user);
+    if(!user) {
+      //return unfulfilled promise
+      return Promise.reject();
+    }
+
+    return new Promise((resolve, reject) => {
+      //use bcrypt.compare to user.password
+      bcrypt.compare(password, user.password, (err, res) => {
+        if(res){
+          resolve(user);
+        } else {
+          return reject();
+        }
+    });
+    })
+  });
+};
+
+//hashes the password before sending the email back
 UserSchema.pre('save', function(next) {
   var user = this;
   //we don't want to hash a password everytime a document is saved

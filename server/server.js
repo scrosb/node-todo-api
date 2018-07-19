@@ -136,6 +136,24 @@ app.post('/users', (req, res) => {
 
 app.get('/users/me', authenticate, (req,res) => {
   res.send(req.user);
-})
+});
+
+//POST /users/login {email, password} //login has an email and password that equals the email an password in our database
+//no authenticate you do not have a token
+app.post('/users/login', (req, res) => {
+  var body = _.pick(req.body, ['email', 'password']);
+  
+  //1. verify a user exists with that email, then get the password property
+  //create another model method called find by credentials
+  //write the user method first to figure out exactly what he wants the method to do
+  User.findByCredentials(body.email, body.password).then((user) => {
+      return user.generateAuthToken().then((token) => {
+        res.header('x-auth', token).send(user);
+      });
+  }).catch((e) => {
+    res.status(400).send();
+  });
+
+});
 
 module.exports = {app};
