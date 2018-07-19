@@ -84,7 +84,6 @@ UserSchema.statics.findByToken = function(token) {
 UserSchema.statics.findByCredentials = function(email, password) {
   //find a user where the email and password match the users
   var User = this;
-  console.log('hello');
     return User.findOne({email}).then((user) => {
     // console.log(user);
     if(!user) {
