@@ -14,7 +14,16 @@ var Todo = mongoose.model('Todo', {
   completedAt: {
     type: Number,
     default: null
+  },
+  //add a creator
+  _creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
   }
 });
+
+//creating todos private,
+//update todo model with creator to associate the todo, added authenticate to both routes, set the creator property
+//equal to the id of the user. fetching the todos in .find using the creator property.
 
 module.exports = {Todo};
