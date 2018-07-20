@@ -47,7 +47,7 @@ UserSchema.methods.generateAuthToken = function() {
   //we need a this keyword for our methods
   var user = this; //we're identifying this specifi user
   var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString(), access}, 'jarjarbinks').toString();
+  var token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET).toString();
 
   user.tokens = user.tokens.concat([{access,token}]);
 
@@ -75,7 +75,7 @@ UserSchema.statics.findByToken = function(token) {
   var decoded;
   //jwt will throw an error if something does not exist
   try {
-    decoded = jwt.verify(token, 'jarjarbinks');
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch(e) {
     //always want to reject
     return Promise.reject();

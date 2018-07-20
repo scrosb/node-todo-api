@@ -12,7 +12,7 @@ const users = [{
   password: 'silasPass',
   tokens: [{
       access:'auth',
-      token:jwt.sign({_id: userOneId, access:'auth'}, 'jarjarbinks').toString()
+      token:jwt.sign({_id: userOneId, access:'auth'}, process.env.JWT_SECRET).toString()
   }]
 }, {
     _id:userTwoId,
@@ -20,7 +20,7 @@ const users = [{
     password:'siPasssdfg',
     tokens: [{
       access:'auth',
-      token:jwt.sign({_id: userTwoId, access:'auth'}, 'jarjarbinks').toString()
+      token:jwt.sign({_id: userTwoId, access:'auth'}, process.env.JWT_SECRET).toString()
   }]
 }];
 
